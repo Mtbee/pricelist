@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Price List</title>
+</head>
+<body>
+    <h1>Price List</h1>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.code }} - {{ item.product_name }} - {{ item.unit_price }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'request_update_price_list' %}">登録画面へ</a>
+    <a href="{% url 'update_history_list' %}">登録indexへ</a>
+</body>
+</html>

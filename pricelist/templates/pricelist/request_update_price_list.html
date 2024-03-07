@@ -1,0 +1,18 @@
+<!-- pricelist/templates/pricelist/update_price_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Price List</title>
+</head>
+<body>
+    <h1>Update Price List</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'price_list' %}">単価リストへ</a>
+    <a href="{% url 'update_history_list' %}">登録indexへ</a>
+</body>
+</html>

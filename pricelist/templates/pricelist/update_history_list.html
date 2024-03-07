@@ -1,0 +1,48 @@
+<!-- your_template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update History List</title>
+</head>
+<body>
+    <h1>Update History List</h1>
+{% for history in history_list %}
+  <div>
+    <p>Code: {{ history.code }}</p>
+    <p>Product Name: {{ history.product_name }}</p>
+    <p>Unit Price: {{ history.unit_price }}</p>
+    
+    <!-- ボタンをクリックしたときにupdate_price_list関数を呼び出す -->
+    <button class="update-btn" data-code="{{ history.code }}">Update Price List</button>
+  </div>
+{% endfor %}
+<a href="{% url 'price_list' %}">単価リストへ</a>
+<a href="{% url 'request_update_price_list' %}">登録画面へ</a>
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // ボタンがクリックされたときの処理
+    $('.update-btn').click(function() {
+      var code = $(this).data('code');
+
+      // Ajaxを使用してupdate_price_list関数を呼び出す
+      $.ajax({
+        type: 'POST',
+        url: '/pricelist/update_price_list/',  // 適切なURLに変更する
+        data: {
+          'code': code,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function(response) {
+          alert('Update successful');  // 成功した場合のメッセージ
+        },
+        error: function(response) {
+          alert('Update failed');  // 失敗した場合のメッセージ
+        }
+      });
+    });
+  });
+</script>
