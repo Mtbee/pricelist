@@ -2,22 +2,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update History List</title>
+    <title>登録index</title>
 </head>
 <body>
-    <h1>Update History List</h1>
-{% for history in history_list %}
-  <div>
-    <p>Code: {{ history.code }}</p>
-    <p>Product Name: {{ history.product_name }}</p>
-    <p>Unit Price: {{ history.unit_price }}</p>
-    
-    <!-- ボタンをクリックしたときにupdate_price_list関数を呼び出す -->
-    <button class="update-btn" data-code="{{ history.code }}">Update Price List</button>
-  </div>
-{% endfor %}
-<a href="{% url 'price_list' %}">単価リストへ</a>
-<a href="{% url 'request_update_price_list' %}">登録画面へ</a>
+    <h1>登録index</h1>
+    <a href="{% url 'price_list' %}">単価リストへ</a>
+    <a href="{% url 'request_update_price_list' %}">登録画面へ</a>
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>作成日</th>
+          <th>コード</th>
+          <th>枝番</th>
+          <th>品名</th>
+          <th>登録単価</th>
+          <th>詳細</th>
+          <th>単価リストに反映</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for history in history_list %}
+          <tr>
+            <td>{{ history.id }}</td>
+            <td>{{ history.created_at | date:'Y/m/d' }}</td>
+            <td>{{ history.code }}</td>
+            <td>{{ history.branch }}</td>
+            <td>{{ history.product_name }}</td>
+            <td>{{ history.unit_price }}</td>
+            <td><a href="{% url 'detail_view' id=history.id %}">Details</a></td>
+            <td><button class="update-btn" data-id="{{ history.id }}">単価リストに反映</button></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
 </body>
 </html>
 
@@ -26,21 +45,15 @@
   $(document).ready(function() {
     // ボタンがクリックされたときの処理
     $('.update-btn').click(function() {
-      var code = $(this).data('code');
+      var id = $(this).data('id'); // data属性をidに変更する
 
       // Ajaxを使用してupdate_price_list関数を呼び出す
       $.ajax({
         type: 'POST',
-        url: '/pricelist/update_price_list/',  // 適切なURLに変更する
+        url: '/pricelist/update_price_list/',  // 正しいURLに変更する
         data: {
-          'code': code,
+          'id': id, // 'code'ではなく'id'を渡す
           'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        success: function(response) {
-          alert('Update successful');  // 成功した場合のメッセージ
-        },
-        error: function(response) {
-          alert('Update failed');  // 失敗した場合のメッセージ
         }
       });
     });

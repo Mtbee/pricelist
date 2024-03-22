@@ -1,9 +1,9 @@
 # pricelist/forms.py
 
 from django import forms
-from .models import PriceListUpdateHistory
+from .models import PriceList
 
 class PriceListUpdateForm(forms.ModelForm):
     class Meta:
-        model = PriceListUpdateHistory
-        fields = ['code', 'product_name', 'unit_price']
+        model = PriceList
+        fields = '__all__'

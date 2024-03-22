@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登録index詳細</title>
+</head>
+<body>
+    <h1>登録index詳細</h1>
+    <a href="{% url 'request_update_price_list' %}">登録画面へ</a>
+    <a href="{% url 'update_history_list' %}">登録indexへ</a>
+    <p>コード: {{ pricelist_update_history.code }}</p>
+    <p>枝番: {{ pricelist_update_history.branch }}</p>
+    <p>品名: {{ pricelist_update_history.product_name }}</p>
+    <p>登録単価: {{ pricelist_update_history.unit_price }}</p>
+    <p>適用単価: {{ pricelist_update_history.apply_unit_price }}</p>
+    <p>配送ロット: {{ pricelist_update_history.delivery_lot }}</p>
+    <p>仕掛ロット: {{ pricelist_update_history.pre_order_lot }}</p>
+    <p>単位: {{ pricelist_update_history.unit }}</p>
+    <p>荷姿: {{ pricelist_update_history.packaging_style }}</p>
+    <p>仕入先コード: {{ pricelist_update_history.supplier_code }}</p>
+    <p>仕入先: {{ pricelist_update_history.supplier }}</p>
+    <p>請求先コード: {{ pricelist_update_history.delivery_code }}</p>
+    <p>納品先: {{ pricelist_update_history.delivery_location }}</p>
+    <p>見積納品先: {{ pricelist_update_history.applicable_location }}</p>
+    <p>備考: {{ pricelist_update_history.note }}</p>
+    <p>作成日: {{ pricelist_update_history.created_at | date:'Y/m/d' }}</p>
+</body>
+</html>
+

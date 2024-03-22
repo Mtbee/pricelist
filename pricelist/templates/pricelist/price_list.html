@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Price List</title>
+    <title>単価リスト</title>
 </head>
 <body>
-    <h1>Price List</h1>
-    <ul>
-        {% for item in items %}
-            <li>{{ item.code }} - {{ item.product_name }} - {{ item.unit_price }}</li>
-        {% endfor %}
-    </ul>
+    <h1>単価リスト</h1>
     <a href="{% url 'request_update_price_list' %}">登録画面へ</a>
     <a href="{% url 'update_history_list' %}">登録indexへ</a>
+    <table>
+        <thead>
+          <tr>
+            <th>コード</th>
+            <th>枝番</th>
+            <th>品名</th>
+            <th>登録単価</th>
+            <th>適用単価</th>
+            <th>配送ロット</th>
+            <th>仕掛ロット</th>
+            <th>単位</th>
+            <th>荷姿</th>
+            <th>仕入先</th>
+            <th>納品先</th>
+            <th>見積納品先</th>
+            <th>備考</th>
+            <th>更新日</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>{{ item.code }}</td>
+              <td>{{ item.branch }}</td>
+              <td>{{ item.product_name }}</td>
+              <td>{{ item.unit_price }}</td>
+              <td>{{ item.apply_unit_price }}</td>
+              <td>{{ item.delivery_lot }}</td>
+              <td>{{ item.pre_order_lot }}</td>
+              <td>{{ item.unit }}</td>
+              <td>{{ item.packaging_style }}</td>
+              <td>{{ item.supplier }}</td>
+              <td>{{ item.delivery_location }}</td>
+              <td>{{ item.applicable_location }}</td>
+              <td>{{ item.note }}</td>
+              <td>{{ item.created_at | date:'Y/m/d' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
 </body>
 </html>

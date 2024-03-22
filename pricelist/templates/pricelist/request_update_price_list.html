@@ -3,16 +3,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update Price List</title>
+    <title>登録画面</title>
 </head>
 <body>
-    <h1>Update Price List</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update</button>
-    </form>
+    <h1>登録画面</h1>
     <a href="{% url 'price_list' %}">単価リストへ</a>
     <a href="{% url 'update_history_list' %}">登録indexへ</a>
+    <form id="update-price-form" method="post" action="{% url 'request_update_price_list' %}">
+        {% csrf_token %}
+        <table>
+            {% for field in form %}
+            <tr>
+                {% if field.name == 'code' %}
+                    <th><label for="{{ field.id_for_label }}">コード:</label></th>
+                {% elif field.name == 'branch' %}
+                    <th><label for="{{ field.id_for_label }}">枝番:</label></th>
+                {% elif field.name == 'product_name' %}
+                    <th><label for="{{ field.id_for_label }}">商品名:</label></th>
+                {% elif field.name == 'unit_price' %}
+                    <th><label for="{{ field.id_for_label }}">登録単価:</label></th>
+                {% elif field.name == 'apply_unit_price' %}
+                    <th><label for="{{ field.id_for_label }}">適用単価:</label></th>
+                {% elif field.name == 'delivery_lot' %}
+                    <th><label for="{{ field.id_for_label }}">配送ロット:</label></th>
+                {% elif field.name == 'pre_order_lot' %}
+                    <th><label for="{{ field.id_for_label }}">仕掛ロット:</label></th>
+                {% elif field.name == 'unit' %}
+                    <th><label for="{{ field.id_for_label }}">単位:</label></th>
+                {% elif field.name == 'packaging_style' %}
+                    <th><label for="{{ field.id_for_label }}">荷姿:</label></th>
+                {% elif field.name == 'supplier_code' %}
+                    <th><label for="{{ field.id_for_label }}">仕入先コード:</label></th>
+                {% elif field.name == 'supplier' %}
+                    <th><label for="{{ field.id_for_label }}">仕入先:</label></th>
+                {% elif field.name == 'delivery_code' %}
+                    <th><label for="{{ field.id_for_label }}">請求先コード:</label></th>
+                {% elif field.name == 'delivery_location' %}
+                    <th><label for="{{ field.id_for_label }}">納品先:</label></th>
+                {% elif field.name == 'applicable_location' %}
+                    <th><label for="{{ field.id_for_label }}">見積納品先:</label></th>
+                {% elif field.name == 'note' %}
+                    <th><label for="{{ field.id_for_label }}">備考:</label></th>
+                {% else %}
+                    <th><label for="{{ field.id_for_label }}">{{ field.label }}</label></th>
+                {% endif %}
+                <td>{{ field }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="indexに追加">
+    </form>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // フォームが送信されたときの処理
+            $('#update-price-form').submit(function(event) {
+                // branch フィールドが空かどうかをチェック
+                var branchValue = $('#id_branch').val();
+                if (!branchValue) {
+                    // branch フィールドが空の場合はポップアップでエラーメッセージを表示
+                    alert('Branch is missing');
+                    // フォームのデフォルトの送信動作をキャンセル
+                    event.preventDefault();
+                }
+            });
+
+            $('#id_code, #id_branch').change(function() {
+                var code = $('#id_code').val();
+                var branch = $('#id_branch').val();
+                // コードと枝番が入力されたらAjaxリクエストを送信し、デフォルト値を取得してフォームを更新する
+                $.ajax({
+                    type: 'GET',
+                    url: '/pricelist/get_default_values',
+                    data: {
+                        'code': code,
+                        'branch': branch
+                    },
+                    success: function(response) {
+                        // pricelistのフィールドすべての値をセット
+                        $('#id_product_name').val(response.product_name);
+                        $('#id_unit_price').val(response.unit_price);
+                        $('#id_apply_unit_price').val(response.apply_unit_price);
+                        $('#id_delivery_lot').val(response.delivery_lot);
+                        $('#id_pre_order_lot').val(response.pre_order_lot);
+                        $('#id_unit').val(response.unit);
+                        $('#id_packaging_style').val(response.packaging_style);
+                        $('#id_supplier_code').val(response.supplier_code);
+                        $('#id_supplier').val(response.supplier);
+                        $('#id_delivery_code').val(response.delivery_code);
+                        $('#id_delivery_location').val(response.delivery_location);
+                        $('#id_applicable_location').val(response.applicable_location);
+                        $('#id_note').val(response.note);
+                    }
+                });
+            });
+
+        });
+    </script>
 </body>
 </html>
